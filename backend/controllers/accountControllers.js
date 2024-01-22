@@ -25,7 +25,7 @@ const deposit = async (req, res) => {
     return res.status(200).json({ account });
   } catch (error) {
     console.log(error);
-  }
+  } 
 };
 
 const getBalance = async (req, res) => {
@@ -53,7 +53,7 @@ const transfer = async (req, res) => {
   const userId = req.user.id;
 
   const receiverId = req.params.id;
-  
+
   try {
     if (!amount)
       return res.status(400).json({ msg: "Please fill in all fields" });

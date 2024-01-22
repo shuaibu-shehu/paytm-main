@@ -16,7 +16,7 @@ const signup = async (req, res) => {
     const random=Math.floor(Math.random()*1000);
       console.log(random);
     const account=await Account.create({userId:user._id, balance:random});
-    return res.status(200).json({ user });   
+    return res.status(200).json( {success:"user succesfully created"} );   
   } catch (error) {
     console.log(error);
   }
@@ -33,7 +33,8 @@ const signin = async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ msg: "Incorrect password" });
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
-    return res.cookie('token',token).status(200).json({ user });
+    const {password:pass, ...rest}=user._doc;
+    return res.cookie('token',token).status(200).json( rest );
   } catch (error) { 
     console.log(error);
   }
@@ -64,4 +65,17 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { signup, signin, updateUser, signout };
+const getUsers =async (req,res)=>{
+  try {
+    const users= await User.find();
+    console.log(users);
+    const usersWithoutPassword=users.map(user=>{
+      const {password, ...rest}=user._doc;
+      return rest;
+    })
+    return res.status(200).json({users:usersWithoutPassword});
+  } catch (error) {
+    console.log(error);
+  }
+}
+module.exports = { signup, signin, updateUser, signout, getUsers };
