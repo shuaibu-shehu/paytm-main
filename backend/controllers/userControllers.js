@@ -2,6 +2,7 @@ const User = require("../model/User");
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const Account = require("../model/Account");
 
 const signup = async (req, res) => {
   try {
@@ -12,6 +13,9 @@ const signup = async (req, res) => {
     if(userExists) return res.status(400).json({msg:"User already exists"});
     const hashedPassword=await bcrypt.hash(password,10); 
     const user=await User.create({ name, password:hashedPassword, email });
+    const random=Math.floor(Math.random()*1000);
+      console.log(random);
+    const account=await Account.create({userId:user._id, balance:random});
     return res.status(200).json({ user });   
   } catch (error) {
     console.log(error);

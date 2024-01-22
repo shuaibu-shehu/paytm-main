@@ -5,6 +5,7 @@ const cors=require('cors');
 const dotenv=require('dotenv').config();
 const cookieParser=require('cookie-parser');
 const userRouter=require('./routers/userRouter');
+const accountRouter=require('./routers/accountRouter');
 
 try { 
     mongoose.connect(process.env.MONGO);
@@ -12,10 +13,11 @@ try {
     console.log(error);
   } 
 
-   
+app.use(cors());   
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api',userRouter)
+app.use('/api',accountRouter);
   
 mongoose.connection.once("open", () => {
     console.log("DB connected");
