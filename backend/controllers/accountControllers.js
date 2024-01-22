@@ -47,9 +47,13 @@ const getBalance = async (req, res) => {
 const transfer = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
+
   const { amount } = req.body;
+
   const userId = req.user.id;
+
   const receiverId = req.params.id;
+  
   try {
     if (!amount)
       return res.status(400).json({ msg: "Please fill in all fields" });
