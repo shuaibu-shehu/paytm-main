@@ -8,14 +8,13 @@ import { signinStart, signinSuccess } from '../redux/user/userSlicer'
 function Signin() {
   const [formData, setFormData] = useState({})
 //   const dispatch = UseDispatch()
+console.log(document.cookie);
   const {error, loading, currentUser} = useSelector(state=>state.user)
   const dispatch=useDispatch()
   const navigate = useNavigate()
   const handleOnChange = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value})
   }
-  
-  console.log(formData);
  
   const handleOnSubmit = async (e) => {
     e.preventDefault() 
@@ -23,17 +22,21 @@ function Signin() {
      const res= await fetch('http://localhost:3000/api/user/signin', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json' 
       },
       body: JSON.stringify(formData)
+ 
+     
     })
     const data = await res.json()
     if(data.msg){
         alert(data.msg)
        return;
     }
-    console.log(data);
-    dispatch(signinSuccess(data))
+    const {token, user}=data
+    localStorage.setItem('token', token)
+    console.log(user);
+    dispatch(signinSuccess(user))
     navigate('/dashboard') 
     } catch (error) {
       console.log(error); 

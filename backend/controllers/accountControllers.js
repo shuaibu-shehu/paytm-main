@@ -29,8 +29,11 @@ const deposit = async (req, res) => {
 };
 
 const getBalance = async (req, res) => {
-  const userId = req.user.id;
   try {
+    console.log('getBalance is reached');
+    const userId = req.user.id;
+    console.log('userid',userId);
+    console.log(req.params.id);
     if (userId !== req.params.id)
       return res
         .status(400)
