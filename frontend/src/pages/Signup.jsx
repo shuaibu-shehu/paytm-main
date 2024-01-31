@@ -29,7 +29,9 @@ function Signup() {
     
   }
   return (
-    <div className=' rounded-xl bg-slate-200 p-4 max-w-[400px] mx-auto m-4 flex flex-col gap-4'>
+    <div className="w-full h-screen flex justify-center items-center">
+
+    <div className=' rounded-xl bg-slate-200 p-4 w-[400px] mx-auto m-4 flex flex-col gap-4'>
       <div className=' text-center flex flex-col gap-3'>
           <h1 className='text-4xl font-bold'>Sign Up</h1>
           <p className='text-slate-600'>Enter your information to <br /> create an account</p>
@@ -61,6 +63,7 @@ function Signup() {
               </div>
           </div>
       </form>
+      </div>
       </div>
   )
 }

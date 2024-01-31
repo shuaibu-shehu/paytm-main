@@ -11,7 +11,7 @@ const verifyUser = async(req, res, next) => {
         next();
     } catch (error) {
         console.log('error');
-        return res.status(401).json({ msg: "Unauthorized access" });
+        return res.status(401).json({ error:"error", msg: "Unauthorized access" });
     }
 }
 

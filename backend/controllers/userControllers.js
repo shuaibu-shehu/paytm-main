@@ -72,6 +72,7 @@ const updateUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
   try {
+    const userId = req.user.id;
     const query = req.query.filter || "";
     let users;
     console.log(query);
@@ -84,12 +85,16 @@ const getUsers = async (req, res) => {
       users = await User.find();
     }
     if (users.length == 0)
-      return res.status(400).json({ msg: "No users found" });
+
+      return res.status(400).json({ users: []});
     const usersWithoutPassword = users.map((user) => {
       const { password, ...rest } = user._doc;
       return rest;
     });
-    return res.status(200).json({ users: usersWithoutPassword });
+    const excludeCurrentUser = usersWithoutPassword.filter(
+      (user) => user._id != userId
+    );
+    return res.status(200).json({ users: excludeCurrentUser});
   } catch (error) {
     console.log(error);
   }

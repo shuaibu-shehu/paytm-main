@@ -52,7 +52,8 @@ const transfer = async (req, res) => {
   session.startTransaction();
 
   const { amount } = req.body;
-
+  const parsedAmount = Number(amount);
+     console.log(typeof parsedAmount);
   const userId = req.user.id;
 
   const receiverId = req.params.id;
@@ -79,16 +80,16 @@ const transfer = async (req, res) => {
     }
 
     const account = await Account.findOne({ userId }).session(session);
-    if (account.balance < amount) {
+    if (account.balance < parsedAmount) {
       await session.abortTransaction();
       return res.status(400).json({ msg: "Insufficient funds" });
     }
-    account.balance -= amount;
+    account.balance -= parsedAmount;
     await account.save();
-    receiverAccount.balance += amount;
+    receiverAccount.balance += parsedAmount;
     await receiverAccount.save();
     await session.commitTransaction();
-    return res.status(200).json({ account, receiverAccount });
+    return res.status(200).json({ msg: "Transfer successful"});
   } catch (error) {
     console.log(error);
   }
